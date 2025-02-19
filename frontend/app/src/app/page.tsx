@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import ServiceCard from "@/components/Services/ServiceCard";
+import ServiceCard from "@/app/services/page";
 const featuredServices = [
   {
     id: "1",

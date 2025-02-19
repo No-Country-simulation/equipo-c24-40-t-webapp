@@ -27,12 +27,12 @@ const ServiceCard = () => {
   return (
     <div>
       <h1>Servicios</h1>
-      {services.map((service) => (
+      {/* {services.map((service) => (
         <div key={service.id}>
           <h2>{service.name}</h2>
           <p>{service.description}</p>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };
