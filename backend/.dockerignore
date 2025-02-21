@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Archivos de configuración de VSCode
+.vscode/
+
+# Archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de Git
+.git/
+.gitignore
+
+# Archivos de Docker
+Dockerfile
+.dockerignore
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+
+# Directorios y archivos sensibles
+.env
