@@ -30,3 +30,25 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+
+## Creación del modulo Servicios
+
+```bash
+# creation
+$ nest g resource services --no-spec
+```
+
+Generará la siguiente estructura.
+```bash
+src/
+├─ services/
+│  ├─ dto/
+│  │  ├─ create-service.dto.ts
+│  │  └─ update-service.dto.ts
+│  ├─ guards/
+│  │  └─ ownership.guard.ts
+│  ├─ services.controller.ts
+│  ├─ services.service.ts
+│  └─ services.module.ts
+```
+Eliminamos la carpeta entities/ y reemplazamos por guards/ y ownership.guard.ts
