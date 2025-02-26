@@ -7,22 +7,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  PROFESSIONAL
+  ADMIN
+}
+
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String        @unique
+  password     String
+  role         UserRole      @default(USER)
+  location     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  Professional Professional?
+  bookings     Booking[]
+
+  @@map("users")
+}
+
+model Professional {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @unique @db.ObjectId
+  experience String
+  skills     String[]
+  rating     Float     @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  services   Service[]
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("professionals")
+}
+
 model Service {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
   title          String
   description    String
   price          Float
   category       String
-  availability   Boolean   @default(true)
-  professionalId String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  availability   Boolean      @default(true)
+  professionalId String       @db.ObjectId
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   Booking        Booking[]
+  Professional   Professional @relation(fields: [professionalId], references: [id])
+
+  @@map("services")
 }
 
 model Booking {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String
+  userId    String   @db.ObjectId
   serviceId String   @db.ObjectId
   status    String   @default("pending")
   date      DateTime
@@ -30,6 +68,21 @@ model Booking {
   updatedAt DateTime @updatedAt
 
   // Relaciones
-  // user        User     @relation(fields: [userId], references: [id])
   service Service @relation(fields: [serviceId], references: [id])
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Review  Review?
+
+  @@map("bookings")
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId String   @unique @db.ObjectId
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  rating    Float
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
 }

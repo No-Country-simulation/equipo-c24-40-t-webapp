@@ -1,31 +1,30 @@
+# Usar una imagen ligera de Node.js con Alpine
 FROM node:22.14.0-alpine3.20
 
-# Establecer el directorio de trabajo
+# Configurar el directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de configuración
+# Copiar archivos esenciales antes de instalar dependencias
 COPY package.json pnpm-lock.yaml ./
 
-# Instalar pnpm
+# Instalar PNPM globalmente
 RUN npm install -g pnpm
 
-# Crear el directorio de binarios globales para pnpm y configurarlo
-RUN mkdir -p /root/.pnpm-global/bin && pnpm config set global-bin-dir /root/.pnpm-global/bin
+# Configurar PNPM correctamente
+ENV PNPM_HOME="/root/.pnpm-global"
+ENV PATH="${PNPM_HOME}/bin:${PATH}"
 
-# Añadir el directorio de binarios globales de pnpm al PATH
-ENV PATH=/root/.pnpm-global/bin:$PATH
+# Crear el directorio global de PNPM y configurarlo
+RUN mkdir -p "${PNPM_HOME}" && pnpm config set prefix "${PNPM_HOME}"
 
-# Instalar dependencias globales para desarrollo
-RUN pnpm install @nestjs/cli -g
+# Instalar NestJS CLI globalmente con PNPM
+RUN pnpm install -g @nestjs/cli
 
-# Copiar el resto de los archivos del proyecto
+# Copiar el resto del código fuente
 COPY . .
 
-# Instalar dependencias locales
-RUN pnpm install
-
-# Exponer el puerto necesario
+# Exponer el puerto 3000
 EXPOSE 3000
 
-# Comando para iniciar la aplicación
-CMD ["pnpm", "start:dev"]
+# Comando por defecto para iniciar la aplicación
+CMD ["pnpm", "start"]
