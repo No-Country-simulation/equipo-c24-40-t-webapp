@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import { AuthContext } from '../context/AuthContext';
 
+var texto = "email";
+var correo =texto+"@gmail.com";
+
+
+
 const Login = () => {
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
