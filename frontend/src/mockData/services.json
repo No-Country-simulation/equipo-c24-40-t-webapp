@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "title": "Desarrollo Web",
+    "description": "Creación de sitios web modernos y responsivos.",
+    "price": 800000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 2,
+    "title": "Diseño UX/UI",
+    "description": "Optimización de experiencia de usuario y diseño visual.",
+    "price": 900000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 3,
+    "title": "SEO y Posicionamiento",
+    "description": "Mejoramos tu visibilidad en buscadores como Google.",
+    "price": 500000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 4,
+    "title": "Gestión de Redes Sociales",
+    "description": "Manejo profesional de redes para aumentar engagement.",
+    "price": 600000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 5,
+    "title": "Desarrollo de Apps Móviles",
+    "description": "Aplicaciones nativas y multiplataforma.",
+    "price": 1500000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 6,
+    "title": "E-commerce",
+    "description": "Tiendas online con pasarelas de pago seguras.",
+    "price": 1200000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 7,
+    "title": "Marketing Digital",
+    "description": "Estrategias de publicidad en redes y Google Ads.",
+    "price": 750000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 8,
+    "title": "Branding y Diseño Gráfico",
+    "description": "Creación de identidad visual y logotipos.",
+    "price": 700000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 9,
+    "title": "Consultoría IT",
+    "description": "Asesoría en tecnología para optimizar procesos.",
+    "price": 1200000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 10,
+    "title": "Ciberseguridad",
+    "description": "Protección de datos y auditoría de seguridad.",
+    "price": 1400000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 11,
+    "title": "Automatización de Procesos",
+    "description": "Implementación de RPA y scripts automatizados.",
+    "price": 1100000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 12,
+    "title": "Hosting y Dominio",
+    "description": "Alojamiento web y gestión de dominios.",
+    "price": 150000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 13,
+    "title": "Producción Audiovisual",
+    "description": "Creación de videos y animaciones publicitarias.",
+    "price": 1600000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 14,
+    "title": "Analítica Web",
+    "description": "Implementación de métricas con Google Analytics.",
+    "price": 500000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 15,
+    "title": "Desarrollo de Chatbots",
+    "description": "Bots inteligentes para atención al cliente.",
+    "price": 950000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 16,
+    "title": "Creación de Contenido",
+    "description": "Redacción de blogs, artículos y newsletters.",
+    "price": 400000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 17,
+    "title": "Email Marketing",
+    "description": "Campañas de email personalizadas.",
+    "price": 500000,
+    "image": "Square_200x200.svg"
+  },
+  {
+    "id": 18,
+    "title": "Optimización de Velocidad Web",
+    "description": "Mejoramos el rendimiento y tiempos de carga.",
+    "price": 450000,
+    "image": "Square_200x200.svg"
+  }
+]
