@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { ProfessionalsModule } from './professionals/professionals.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProfessionalsModule } from './professionals/professionals.module';
     BookingsModule,
     UsersModule,
     ProfessionalsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

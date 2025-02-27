@@ -58,11 +58,18 @@ model Service {
   @@map("services")
 }
 
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
 model Booking {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
   serviceId String   @db.ObjectId
-  status    String   @default("pending")
+  status    BookingStatus @default(PENDING)
   date      DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -12,7 +12,7 @@ export class BookingsService {
       data: {
         userId: createBookingDto.userId,
         serviceId: createBookingDto.serviceId,
-        status: 'pending',
+        status: 'PENDING',
         date: new Date(createBookingDto.date),
       },
     });
