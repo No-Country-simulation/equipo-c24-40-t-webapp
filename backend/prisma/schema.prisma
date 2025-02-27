@@ -48,6 +48,7 @@ model Service {
   description    String
   price          Float
   category       String
+  featured       Boolean      @default(false)
   availability   Boolean      @default(true)
   professionalId String       @db.ObjectId
   createdAt      DateTime     @default(now())
