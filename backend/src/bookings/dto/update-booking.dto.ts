@@ -4,11 +4,11 @@ import { IsOptional, IsDateString, IsEnum } from 'class-validator';
 import { BookingStatus } from '@prisma/client';
 
 export class UpdateBookingDto extends PartialType(CreateBookingDto) {
-  @IsEnum(BookingStatus)
+  @IsEnum(BookingStatus, { message: 'Status must be a valid BookingStatus' })
   @IsOptional()
-  status?: BookingStatus;
+  status: BookingStatus;
 
   @IsDateString()
   @IsOptional()
-  date?: string;
+  date: string;
 }

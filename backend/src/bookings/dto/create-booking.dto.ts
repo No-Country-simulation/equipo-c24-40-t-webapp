@@ -16,11 +16,11 @@ export class CreateBookingDto {
   @IsNotEmpty()
   serviceId: string;
 
-  @IsEnum(BookingStatus)
+  @IsEnum(BookingStatus, { message: 'Status must be a valid BookingStatus' })
   @IsOptional()
   status?: BookingStatus;
 
-  @IsDateString()
+  @IsDateString({}, { message: 'Invalid date format, must be ISO8601' })
   @IsNotEmpty()
   date: string; // Fecha en formato ISO
 }
