@@ -54,11 +54,26 @@ export class BookingsService {
     });
   }
 
-  async findAll() {
+  findAll() {
     return this.prisma.booking.findMany({
-      include: {
-        service: true,
-        Professional: { select: { id: true } },
+      select: {
+        id: true,
+        date: true,
+        status: true,
+        professional: {
+          select: {
+            id: true,
+            profession: true,
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            price: true,
+          },
+        },
       },
     });
   }
@@ -68,7 +83,7 @@ export class BookingsService {
       where: { id },
       include: {
         service: true,
-        Professional: { select: { id: true } },
+        professional: { select: { id: true } },
       },
     });
     if (!booking) {

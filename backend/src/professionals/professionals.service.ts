@@ -43,6 +43,9 @@ export class ProfessionalsService {
     return this.prisma.professional.create({
       data: {
         userId: createProfessionalDto.userId,
+        profession: createProfessionalDto.profession,
+        education: createProfessionalDto.education,
+        certified: createProfessionalDto.certified,
         experience: createProfessionalDto.experience || '',
         skills: createProfessionalDto.skills || [],
         rating: createProfessionalDto.rating,
@@ -62,11 +65,20 @@ export class ProfessionalsService {
 
   async findAll() {
     return this.prisma.professional.findMany({
-      include: {
+      select: {
+        id: true,
+        profession: true,
+        education: true,
+        certified: true,
+        experience: true,
+        skills: true,
+        rating: true,
         user: {
           select: {
             id: true,
             name: true,
+            lastname: true,
+            age: true,
             email: true,
             location: true,
           },

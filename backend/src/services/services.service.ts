@@ -8,8 +8,15 @@ export class ServicesService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(createServiceDto: CreateServiceDto) {
-    const { title, description, price, category, professionalId } =
-      createServiceDto;
+    const {
+      title,
+      description,
+      price,
+      category,
+      featured,
+      availability,
+      professionalId,
+    } = createServiceDto;
 
     // Verificar si el profesional existe antes de crear el servicio
     const professional = await this.prismaService.professional.findUnique({
@@ -28,6 +35,8 @@ export class ServicesService {
         description,
         price,
         category,
+        featured,
+        availability,
         professionalId,
       },
     });
@@ -43,7 +52,7 @@ export class ServicesService {
         category: true,
         featured: true,
         availability: true,
-        Professional: {
+        professional: {
           select: {
             experience: true,
             skills: true,
@@ -74,7 +83,7 @@ export class ServicesService {
         availability: true,
         professionalId: true,
         // No incluimos createdAt ni updatedAt
-        Professional: {
+        professional: {
           select: {
             id: true,
             user: {

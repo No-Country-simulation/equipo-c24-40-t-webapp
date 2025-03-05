@@ -1,5 +1,10 @@
 // src/usuarios/usuario.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto/index';
 import * as bcrypt from 'bcrypt';
@@ -9,17 +14,43 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    // Hash de la contraseña
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    try {
+      // Verificar si el email ya está registrado
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: createUserDto.email },
+      });
 
-    // Crear usuario en la base de datos
-    return this.prisma.user.create({
-      data: {
-        ...createUserDto,
-        location: createUserDto.location ?? '',
-        password: hashedPassword,
-      },
-    });
+      if (existingUser) {
+        throw new BadRequestException('El email ya está en uso');
+      }
+
+      // Validar longitud de la contraseña
+      if (createUserDto.password.length < 8) {
+        throw new BadRequestException(
+          'La contraseña debe tener al menos 8 caracteres',
+        );
+      }
+
+      // Hash de la contraseña
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+      // Crear usuario en la base de datos
+      return this.prisma.$transaction(async (tx) => {
+        return tx.user.create({
+          data: {
+            ...createUserDto,
+            name: createUserDto.name,
+            lastname: createUserDto.lastname,
+            age: createUserDto.age,
+            email: createUserDto.email,
+            location: createUserDto.location ?? '',
+            password: hashedPassword,
+          },
+        });
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(`Error al crear el usuario`);
+    }
   }
 
   async findAll() {
@@ -27,11 +58,11 @@ export class UsersService {
       select: {
         id: true,
         name: true,
+        lastname: true,
+        age: true,
         email: true,
         role: true,
         location: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
   }
@@ -42,11 +73,11 @@ export class UsersService {
       select: {
         id: true,
         name: true,
+        lastname: true,
+        age: true,
         email: true,
         role: true,
         location: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
 
