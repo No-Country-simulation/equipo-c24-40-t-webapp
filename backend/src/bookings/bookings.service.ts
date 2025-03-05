@@ -15,11 +15,11 @@ export class BookingsService {
   async create(createBookingDto: CreateBookingDto) {
     // Validar usuario
     const user = await this.prisma.user.findUnique({
-      where: { id: createBookingDto.userId },
+      where: { id: createBookingDto.professionalId },
     });
     if (!user) {
       throw new NotFoundException(
-        `User with ID ${createBookingDto.userId} not found`,
+        `User with ID ${createBookingDto.professionalId} not found`,
       );
     }
     // Validar si el servicio existe
@@ -33,7 +33,7 @@ export class BookingsService {
     }
     const exxistingBooking = await this.prisma.booking.findFirst({
       where: {
-        userId: createBookingDto.userId,
+        professionalId: createBookingDto.professionalId,
         serviceId: createBookingDto.serviceId,
         date: new Date(createBookingDto.date),
       },
@@ -46,7 +46,7 @@ export class BookingsService {
 
     return this.prisma.booking.create({
       data: {
-        userId: createBookingDto.userId,
+        professionalId: createBookingDto.professionalId,
         serviceId: createBookingDto.serviceId,
         status: 'PENDING',
         date: new Date(createBookingDto.date),
@@ -58,7 +58,7 @@ export class BookingsService {
     return this.prisma.booking.findMany({
       include: {
         service: true,
-        User: { select: { id: true, name: true } },
+        Professional: { select: { id: true } },
       },
     });
   }
@@ -68,7 +68,7 @@ export class BookingsService {
       where: { id },
       include: {
         service: true,
-        User: { select: { id: true, name: true } },
+        Professional: { select: { id: true } },
       },
     });
     if (!booking) {

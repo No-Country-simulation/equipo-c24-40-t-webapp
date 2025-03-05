@@ -35,10 +35,26 @@ export class ServicesService {
 
   findAll() {
     return this.prismaService.service.findMany({
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        category: true,
+        featured: true,
+        availability: true,
         Professional: {
-          include: {
-            user: true,
+          select: {
+            experience: true,
+            skills: true,
+            rating: true,
+            user: {
+              select: {
+                name: true,
+                email: true,
+                location: true,
+              },
+            },
           },
         },
       },
@@ -49,9 +65,28 @@ export class ServicesService {
     const service = await this.prismaService.service.findUnique({
       where: { id },
       select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        category: true,
+        featured: true,
+        availability: true,
+        professionalId: true,
+        // No incluimos createdAt ni updatedAt
         Professional: {
-          include: {
-            user: true,
+          select: {
+            id: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                location: true,
+                // No incluimos password, createdAt ni updatedAt del usuario
+              },
+            },
           },
         },
       },

@@ -10,7 +10,7 @@ import {
 export class CreateBookingDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  professionalId: string;
 
   @IsString()
   @IsNotEmpty()
