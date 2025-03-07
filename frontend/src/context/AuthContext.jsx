@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { login, logout, getProfile } from '../services/authService';
+import { getToken, setToken, removeToken } from '../utils/storage';
 
 export const AuthContext = createContext();
 
@@ -9,12 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUser = async () => {
-      if (localStorage.getItem('token')) {
+      if (getToken()) {
         try {
           const profile = await getProfile();
           setUser(profile.user);
         } catch (error) {
-          logout();
+          signOut();
         }
       }
       setLoading(false);
@@ -24,11 +25,12 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async (email, password) => {
     const data = await login(email, password);
+    setToken(data.token);
     setUser(data.user);
   };
 
   const signOut = () => {
-    logout();
+    removeToken();
     setUser(null);
   };
 

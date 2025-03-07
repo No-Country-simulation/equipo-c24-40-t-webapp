@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
+import AuthForm from '../components/auth/AuthForm';
 import { register } from '../services/authService';
 
 const Register = () => {
@@ -11,7 +11,7 @@ const Register = () => {
     navigate('/login');
   };
 
-  return <AuthForm onSubmit={handleRegister} isRegister />;
+  return <AuthForm title="Register" onSubmit={handleRegister} />;
 };
 
 export default Register;

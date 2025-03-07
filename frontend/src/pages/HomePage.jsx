@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import FeaturedService from "../components/FeaturedServices";
+import FeaturedService from "../components/services/FeaturedServices";
 export default function HomePage() {
   return (
     <>

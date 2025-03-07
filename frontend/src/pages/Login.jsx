@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
+import AuthForm from '../components/auth/AuthForm';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
     navigate('/profile');
   };
 
-  return <AuthForm onSubmit={handleLogin} />;
+  return <AuthForm title="Login" onSubmit={handleLogin} />;
 };
 
 export default Login;
