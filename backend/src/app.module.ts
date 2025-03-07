@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { ProfessionalsModule } from './professionals/professionals.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     UsersModule,
     ProfessionalsModule,
     ReviewsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

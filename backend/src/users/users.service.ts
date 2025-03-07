@@ -88,6 +88,12 @@ export class UsersService {
     return usuario;
   }
 
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     // Verificar si el usuario existe
     await this.findOne(id);
