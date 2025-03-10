@@ -1,39 +1,57 @@
 import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
   IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsEnum,
+  IsOptional,
+  IsArray,
 } from 'class-validator';
 import { UserRole } from '@prisma/client';
 
 export class CreateUserDto {
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   lastname: string;
 
   @IsNotEmpty()
-  @IsNumber()
   age: number;
 
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   password: string;
 
-  @IsOptional()
-  @IsEnum(UserRole)
-  role?: UserRole;
-
-  @IsOptional()
   @IsString()
+  @IsOptional()
   location?: string;
+
+  @IsEnum(UserRole)
+  role: UserRole;
+
+  // Datos opcionales para profesionales
+  @IsString()
+  @IsOptional()
+  profession?: string;
+
+  @IsString()
+  @IsOptional()
+  education?: string;
+
+  @IsString()
+  @IsOptional()
+  certified?: string;
+
+  @IsString()
+  @IsOptional()
+  experience?: string;
+
+  @IsArray()
+  @IsOptional()
+  skills?: string[];
 }

@@ -1,59 +1,56 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { LoginDto } from './dto/login.dto';
+import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './dto/register.dto';
-import { TokenPayload } from './interfaces/token-payload.interface';
-import { CreateUserDto } from 'src/users/dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findByEmail(email);
-    if (!user) return null;
+  async register(registerDto: RegisterDto) {
+    const { password, passwordConfirm } = registerDto;
 
-    const isValid = await bcrypt.compare(pass, user.password);
-    if (!isValid) return null;
-
-    const { password, ...result } = user;
-    return result;
-  }
-
-  async login(loginDto: LoginDto) {
-    const user = await this.validateUser(loginDto.email, loginDto.password);
-    if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas');
+    if (password !== passwordConfirm) {
+      throw new BadRequestException('Las contraseñas no coinciden');
     }
 
-    const payload: TokenPayload = {
-      email: user.email,
-      sub: user.id,
-      role: user.role,
-    };
+    const user = await this.usersService.create(registerDto);
+    return this.login(user);
+  }
+
+  async validateUser(email: string, password: string) {
+    // Buscar usuario en la base de datos
+    const user = await this.usersService.findByEmail(email);
+    if (!user) throw new UnauthorizedException('Credenciales incorrectas');
+
+    // Comparar contraseña encriptada
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch)
+      throw new UnauthorizedException('Credenciales incorrectas');
+
+    return user;
+  }
+
+  login(user: User) {
+    const payload = { sub: user.id, email: user.email, role: user.role };
 
     return {
       access_token: this.jwtService.sign(payload),
       user: {
         id: user.id,
-        email: user.email,
         name: user.name,
+        email: user.email,
         role: user.role,
       },
     };
-  }
-
-  async register(registerDto: RegisterDto) {
-    if (registerDto.password !== registerDto.passwordConfirm) {
-      throw new UnauthorizedException('Las contraseñas no coinciden');
-    }
-
-    const { passwordConfirm, ...userData } = registerDto;
-    return this.usersService.create(userData as CreateUserDto);
   }
 }

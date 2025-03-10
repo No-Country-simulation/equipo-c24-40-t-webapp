@@ -19,7 +19,7 @@ export class ServicesService {
     } = createServiceDto;
 
     // Verificar si el profesional existe antes de crear el servicio
-    const professional = await this.prismaService.professional.findUnique({
+    const professional = await this.prismaService.professionalData.findUnique({
       where: { id: professionalId },
     });
 
@@ -44,32 +44,25 @@ export class ServicesService {
 
   findAll() {
     return this.prismaService.service.findMany({
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        price: true,
-        category: true,
-        featured: true,
-        availability: true,
+      include: {
         professional: {
-          select: {
-            experience: true,
-            skills: true,
-            rating: true,
+          include: {
             user: {
               select: {
+                id: true,
                 name: true,
+                lastname: true,
                 email: true,
                 location: true,
+                role: true,
               },
             },
           },
         },
+        review: true,
       },
     });
   }
-
   async findOne(id: string) {
     const service = await this.prismaService.service.findUnique({
       where: { id },

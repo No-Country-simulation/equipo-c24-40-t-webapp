@@ -13,66 +13,52 @@ export class ProfessionalsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createProfessionalDto: CreateProfessionalDto) {
-    // Verificar si el user existe
-    const user = await this.prisma.user.findUnique({
-      where: { id: createProfessionalDto.userId },
-    });
+    const {
+      userId,
+      profession,
+      education,
+      certified,
+      experience,
+      skills,
+      rating,
+    } = createProfessionalDto;
 
-    if (!user) {
-      throw new NotFoundException(
-        `user con ID ${createProfessionalDto.userId} no encontrado`,
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user)
+      throw new NotFoundException(`Usuario con ID ${userId} no encontrado`);
+
+    const existingProfessional = await this.prisma.professionalData.findUnique({
+      where: { userId },
+    });
+    if (existingProfessional)
+      throw new BadRequestException(
+        'Este usuario ya tiene un perfil profesional',
       );
-    }
 
-    // Verificar si el user ya tiene un perfil profesional
-    const existingProfesional = await this.prisma.professional.findUnique({
-      where: { userId: createProfessionalDto.userId },
-    });
-
-    if (existingProfesional) {
-      throw new BadRequestException('Este user ya tiene un perfil profesional');
-    }
-
-    // Actualizar el rol del user a profesional
     await this.prisma.user.update({
-      where: { id: createProfessionalDto.userId },
+      where: { id: userId },
       data: { role: UserRole.PROFESSIONAL },
     });
 
-    // Crear el perfil profesional
-    return this.prisma.professional.create({
+    return this.prisma.professionalData.create({
       data: {
-        userId: createProfessionalDto.userId,
-        profession: createProfessionalDto.profession,
-        education: createProfessionalDto.education,
-        certified: createProfessionalDto.certified,
-        experience: createProfessionalDto.experience || '',
-        skills: createProfessionalDto.skills || [],
-        rating: createProfessionalDto.rating,
+        userId,
+        profession,
+        education,
+        certified,
+        experience: experience || '',
+        skills: skills || [],
+        rating,
       },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            location: true,
-          },
-        },
+        user: { select: { id: true, name: true, email: true, location: true } },
       },
     });
   }
 
   async findAll() {
-    return this.prisma.professional.findMany({
-      select: {
-        id: true,
-        profession: true,
-        education: true,
-        certified: true,
-        experience: true,
-        skills: true,
-        rating: true,
+    return this.prisma.professionalData.findMany({
+      include: {
         user: {
           select: {
             id: true,
@@ -88,87 +74,49 @@ export class ProfessionalsService {
   }
 
   async findOne(id: string) {
-    const professional = await this.prisma.professional.findUnique({
+    const professional = await this.prisma.professionalData.findUnique({
       where: { id },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            location: true,
-          },
-        },
+        user: { select: { id: true, name: true, email: true, location: true } },
       },
     });
-
-    if (!professional) {
+    if (!professional)
       throw new NotFoundException(`Profesional con ID ${id} no encontrado`);
-    }
-
     return professional;
   }
 
   async findByUserId(userId: string) {
-    const professional = await this.prisma.professional.findUnique({
+    const professional = await this.prisma.professionalData.findUnique({
       where: { userId },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            location: true,
-          },
-        },
+        user: { select: { id: true, name: true, email: true, location: true } },
       },
     });
-
-    if (!professional) {
+    if (!professional)
       throw new NotFoundException(
         `Profesional con user ID ${userId} no encontrado`,
       );
-    }
-
     return professional;
   }
 
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto) {
-    // Verificar si el profesional existe
     await this.findOne(id);
-
-    // Actualizar el profesional
-    return this.prisma.professional.update({
+    return this.prisma.professionalData.update({
       where: { id },
       data: updateProfessionalDto,
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            location: true,
-          },
-        },
+        user: { select: { id: true, name: true, email: true, location: true } },
       },
     });
   }
 
-  async remove(id: string) {
-    // Verificar si el profesional existe
-    const profesional = await this.findOne(id);
-
-    // Eliminar el profesional
-    await this.prisma.professional.delete({
-      where: { id },
-    });
-
-    // Cambiar el rol del user a "user" si es necesario
+  async remove(id: string): Promise<{ message: string }> {
+    const professional = await this.findOne(id);
+    await this.prisma.professionalData.delete({ where: { id } });
     await this.prisma.user.update({
-      where: { id: profesional.userId },
-      data: { role: UserRole.USER },
+      where: { id: professional.userId },
+      data: { role: UserRole.CLIENT },
     });
-
     return { message: 'Profesional eliminado correctamente' };
   }
 }

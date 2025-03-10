@@ -1,8 +1,7 @@
-import { PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
-export class RegisterDto extends PartialType(CreateUserDto) {
+export class RegisterDto extends CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
