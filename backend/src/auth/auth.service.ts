@@ -41,15 +41,28 @@ export class AuthService {
   }
 
   login(user: User) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    // Creamos un payload más completo con la información del usuario
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      lastname: user.lastname,
+      age: user.age,
+      location: user.location,
+      createdAt: user.createdAt,
+    };
 
     return {
       access_token: this.jwtService.sign(payload),
       user: {
         id: user.id,
         name: user.name,
+        lastname: user.lastname,
         email: user.email,
         role: user.role,
+        age: user.age,
+        location: user.location,
       },
     };
   }
