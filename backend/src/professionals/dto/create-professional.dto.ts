@@ -16,12 +16,12 @@ export class CreateProfessionalDto {
   profession: string;
 
   @IsString()
-  @IsNotEmpty()
-  education: string;
+  @IsOptional()
+  education?: string;
 
   @IsString()
-  @IsNotEmpty()
-  certified: string;
+  @IsOptional()
+  certified?: string;
 
   @IsOptional()
   @IsString()
@@ -30,7 +30,7 @@ export class CreateProfessionalDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  skills?: string[];
+  skills: string[];
 
   @IsOptional()
   @IsNumber()

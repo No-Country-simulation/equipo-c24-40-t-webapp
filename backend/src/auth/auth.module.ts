@@ -5,13 +5,15 @@ import { UsersModule } from '../users/users.module';
 import { UsersService } from '../users/users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth.constants';
 
 @Module({
   imports: [
     UsersModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1d' },
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   controllers: [AuthController],

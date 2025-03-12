@@ -1,13 +1,13 @@
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
-  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcryptjs';
+import * as bcryptjs from 'bcryptjs';
 import { RegisterDto } from './dto/register.dto';
-import { User } from '@prisma/client';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,53 +17,45 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto) {
-    const { password, passwordConfirm } = registerDto;
+    const { email, password } = registerDto;
 
-    if (password !== passwordConfirm) {
-      throw new BadRequestException('Las contraseñas no coinciden');
+    // Validate if user exists
+    const existingUser = await this.usersService.findByEmail(email);
+    if (existingUser) throw new BadRequestException('El usuario ya existe');
+
+    // Hash password
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    // Create user
+    const user = await this.usersService.create(registerDto, hashedPassword);
+    return {
+      user,
+      message: 'Usuario creado con éxito',
+    };
+  }
+
+  async login({ email, password }: LoginDto) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Email no es correcto');
     }
 
-    const user = await this.usersService.create(registerDto);
-    return this.login(user);
-  }
-
-  async validateUser(email: string, password: string) {
-    // Buscar usuario en la base de datos
-    const user = await this.usersService.findByEmail(email);
-    if (!user) throw new UnauthorizedException('Credenciales incorrectas');
-
-    // Comparar contraseña encriptada
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch)
-      throw new UnauthorizedException('Credenciales incorrectas');
-
-    return user;
-  }
-
-  login(user: User) {
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Contraseña no es correcta');
+    }
     // Creamos un payload más completo con la información del usuario
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-      name: user.name,
-      lastname: user.lastname,
-      age: user.age,
-      location: user.location,
-      createdAt: user.createdAt,
-    };
+    const payload = { name: user.name, email: user.email, role: user.role };
+    const token = await this.jwtService.signAsync(payload);
 
     return {
-      access_token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        name: user.name,
-        lastname: user.lastname,
-        email: user.email,
-        role: user.role,
-        age: user.age,
-        location: user.location,
-      },
+      name: user.name,
+      email: user.email,
+      token,
     };
+  }
+
+  async profile({ email }: { email: string; role: string }) {
+    return await this.usersService.findByEmail(email);
   }
 }

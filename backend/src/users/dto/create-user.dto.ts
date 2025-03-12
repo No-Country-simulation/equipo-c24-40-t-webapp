@@ -6,6 +6,8 @@ import {
   IsOptional,
   IsArray,
   MinLength,
+  IsNumber,
+  ValidateIf,
 } from 'class-validator';
 import { UserRole } from '@prisma/client';
 
@@ -36,24 +38,34 @@ export class CreateUserDto {
   @IsEnum(UserRole)
   role: UserRole;
 
-  // Datos opcionales para profesionales
+  // Campos requeridos solo si role es PROFESSIONAL
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
   @IsString()
-  @IsOptional()
-  profession?: string;
+  @IsNotEmpty()
+  profession: string;
 
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
   @IsString()
   @IsOptional()
   education?: string;
 
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
   @IsString()
   @IsOptional()
   certified?: string;
 
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
   @IsString()
   @IsOptional()
   experience?: string;
 
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
   @IsArray()
   @IsOptional()
-  skills?: string[];
+  skills: string[];
+
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @IsNumber()
+  @IsOptional()
+  rating?: number;
 }

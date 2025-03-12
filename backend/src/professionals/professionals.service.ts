@@ -42,10 +42,10 @@ export class ProfessionalsService {
 
     return this.prisma.professionalData.create({
       data: {
-        userId,
-        profession,
-        education,
-        certified,
+        userId: userId || '',
+        profession: profession || '',
+        education: education || '',
+        certified: certified || '',
         experience: experience || '',
         skills: skills || [],
         rating,

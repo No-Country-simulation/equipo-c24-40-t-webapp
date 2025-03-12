@@ -1,24 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProfessionalsService } from './professionals.service';
-import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
 
 @Controller('professionals')
 export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
 
-  @Post()
+  /*   @Post()
   create(@Body() createProfessionalDto: CreateProfessionalDto) {
     return this.professionalsService.create(createProfessionalDto);
-  }
+  } */
 
   @Get()
   findAll() {

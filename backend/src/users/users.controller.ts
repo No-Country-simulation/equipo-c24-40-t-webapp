@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+/* import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
@@ -6,7 +6,6 @@ import { RequestUser } from 'src/auth/interface/request-user.interface';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('users')
-@Controller('api/users') // Add 'api' prefix here
 @ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -24,3 +23,4 @@ export class UsersController {
     return this.usersService.findById(user.sub);
   }
 }
+ */
