@@ -15,9 +15,14 @@ ENV PNPM_HOME="/root/.pnpm-global"
 ENV PATH="${PNPM_HOME}/bin:${PATH}"
 
 # Crear el directorio global de PNPM y configurarlo
-RUN mkdir -p "${PNPM_HOME}" && pnpm config set prefix "${PNPM_HOME}"
+RUN mkdir -p /root/.pnpm-global
 
 # Instalar NestJS CLI globalmente con PNPM
+RUN pnpm config set global-bin-dir /root/.pnpm-global
+RUN pnpm config set global-dir /root/.pnpm-global
+RUN export PATH="/root/.pnpm-global:$PATH"
+ENV PATH="/root/.pnpm-global:$PATH"
+
 RUN pnpm install -g @nestjs/cli
 
 # Copiar el resto del código fuente
