@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tu-servicio
+    env: node
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PACKAGE_MANAGER
+        value: pnpm
+      - key: NPM_FLAGS
+        value: --shamefully-hoist
