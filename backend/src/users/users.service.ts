@@ -7,7 +7,16 @@ export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
   // Create user and ClientData if role is CLIENT
   async create(createUserDto: CreateUserDto, hashedPassword: string) {
-    const { email, profession, ...restData } = createUserDto;
+    const {
+      email,
+      profession,
+      certified,
+      education,
+      experience,
+      skills,
+      rating,
+      ...restData
+    } = createUserDto;
 
     const user = await this.prismaService.user.create({
       data: {
@@ -23,6 +32,11 @@ export class UsersService {
           professionalData: {
             create: {
               profession,
+              education,
+              certified,
+              experience,
+              skills,
+              rating,
             },
           },
         }),

@@ -4,32 +4,26 @@ FROM node:22.14.0-alpine3.20
 # Configurar el directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos esenciales antes de instalar dependencias
-COPY package.json pnpm-lock.yaml ./
+# Copiar package.json y package-lock.json (si existe)
+COPY package*.json ./
 
-# Instalar PNPM globalmente
-RUN npm install -g pnpm
+# Instalar dependencias
+RUN npm install
 
-# Configurar PNPM correctamente
-ENV PNPM_HOME="/root/.pnpm-global"
-ENV PATH="${PNPM_HOME}/bin:${PATH}"
-
-# Crear el directorio global de PNPM y configurarlo
-RUN mkdir -p /root/.pnpm-global
-
-# Instalar NestJS CLI globalmente con PNPM
-RUN pnpm config set global-bin-dir /root/.pnpm-global
-RUN pnpm config set global-dir /root/.pnpm-global
-RUN export PATH="/root/.pnpm-global:$PATH"
-ENV PATH="/root/.pnpm-global:$PATH"
-
-RUN pnpm install -g @nestjs/cli
+# Instalar NestJS CLI globalmente
+RUN npm install -g @nestjs/cli
 
 # Copiar el resto del código fuente
 COPY . .
+
+# Generar el cliente de Prisma
+RUN npx prisma generate
+
+# Construir la aplicación
+RUN npm run build
 
 # Exponer el puerto 3000
 EXPOSE 3000
 
 # Comando por defecto para iniciar la aplicación
-CMD ["pnpm", "start"]
+CMD ["npm", "start"]
