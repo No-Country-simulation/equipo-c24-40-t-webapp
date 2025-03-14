@@ -5,6 +5,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 @Injectable()
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findAll() {
+    return this.prismaService.user.findMany();
+  }
+
   // Create user and ClientData if role is CLIENT
   async create(createUserDto: CreateUserDto, hashedPassword: string) {
     const {

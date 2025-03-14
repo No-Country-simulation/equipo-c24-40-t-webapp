@@ -100,12 +100,40 @@ export class ProfessionalsService {
   }
 
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto) {
-    await this.findOne(id);
+    const professional = await this.findOne(id);
+
+    // Filtrar campos indefinidos
+    const updateFields = {
+      profession: updateProfessionalDto.profession,
+      education: updateProfessionalDto.education,
+      certified: updateProfessionalDto.certified,
+      experience: updateProfessionalDto.experience,
+      skills: updateProfessionalDto.skills,
+      rating: updateProfessionalDto.rating,
+    };
+
+    // Eliminar campos undefined
+    const filteredUpdateData = Object.fromEntries(
+      Object.entries(updateFields).filter(([, value]) => value !== undefined),
+    );
+
     return this.prisma.professionalData.update({
       where: { id },
-      data: updateProfessionalDto,
+      data: {
+        ...filteredUpdateData,
+        profession: updateProfessionalDto.profession || professional.profession, // Mantener valor existente si no se proporciona uno nuevo
+      },
       include: {
-        user: { select: { id: true, name: true, email: true, location: true } },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            email: true,
+            location: true,
+            role: true,
+          },
+        },
       },
     });
   }

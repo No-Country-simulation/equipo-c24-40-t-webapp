@@ -1,26 +1,22 @@
-/* import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Request } from 'express';
-import { RequestUser } from 'src/auth/interface/request-user.interface';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('users')
 @ApiBearerAuth()
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('clients') // Change back to explicit 'clients' endpoint
-  @UseGuards(JwtAuthGuard)
-  async getAllClients() {
-    return this.usersService.findAllClients();
-  }
-
-  @Get('profile') // Changed from POST to GET since it's retrieving data
-  @UseGuards(JwtAuthGuard)
-  async getProfile(@Req() req: Request) {
-    const user = req.user as RequestUser;
-    return this.usersService.findById(user.sub);
+  @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'List of users' })
+  async getAllUsers() {
+    return this.usersService.findAll();
   }
 }
- */
