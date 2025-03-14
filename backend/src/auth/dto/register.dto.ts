@@ -39,9 +39,9 @@ export class RegisterDto extends CreateUserDto {
   password: string;
 
   @ApiProperty({
-    example: 'PROFESSIONAL',
+    example: 'professional',
     enum: UserRole,
-    description: 'Rol del usuario (CLIENT o PROFESSIONAL)',
+    description: 'Rol del usuario (client o professional)',
   })
   @IsString()
   @IsNotEmpty()

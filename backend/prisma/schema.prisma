@@ -8,8 +8,8 @@ datasource db {
 }
 
 enum UserRole {
-  CLIENT
-  PROFESSIONAL
+  client
+  professional
 }
 
 model User {
@@ -20,7 +20,7 @@ model User {
   email            String            @unique
   password         String
   location         String?
-  role             UserRole          @default(CLIENT)
+  role             UserRole          @default(client)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   clientData       ClientData?

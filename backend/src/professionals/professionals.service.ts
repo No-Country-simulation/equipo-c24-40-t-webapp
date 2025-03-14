@@ -37,7 +37,7 @@ export class ProfessionalsService {
 
     await this.prisma.user.update({
       where: { id: userId },
-      data: { role: UserRole.PROFESSIONAL },
+      data: { role: UserRole.professional },
     });
 
     return this.prisma.professionalData.create({
@@ -143,7 +143,7 @@ export class ProfessionalsService {
     await this.prisma.professionalData.delete({ where: { id } });
     await this.prisma.user.update({
       where: { id: professional.userId },
-      data: { role: UserRole.CLIENT },
+      data: { role: UserRole.client },
     });
     return { message: 'Profesional eliminado correctamente' };
   }

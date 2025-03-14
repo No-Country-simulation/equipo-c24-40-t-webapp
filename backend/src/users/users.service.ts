@@ -28,12 +28,12 @@ export class UsersService {
         ...restData,
         email,
         password: hashedPassword,
-        ...(restData.role === 'CLIENT' && {
+        ...(restData.role === 'client' && {
           clientData: {
             create: {},
           },
         }),
-        ...(restData.role === 'PROFESSIONAL' && {
+        ...(restData.role === 'professional' && {
           professionalData: {
             create: {
               profession,

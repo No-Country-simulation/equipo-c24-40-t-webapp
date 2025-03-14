@@ -55,18 +55,18 @@ export class CreateUserDto {
 
   @ApiProperty({
     enum: UserRole,
-    example: 'CLIENT',
-    description: 'User role - CLIENT or PROFESSIONAL',
+    example: 'client',
+    description: 'User role - client or professional',
   })
   @IsEnum(UserRole)
   role: UserRole;
 
   @ApiProperty({
     example: 'Psicólogo',
-    description: 'Professional occupation (required if role is PROFESSIONAL)',
+    description: 'Professional occupation (required if role is professional)',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsString()
   @IsNotEmpty()
   profession: string;
@@ -76,7 +76,7 @@ export class CreateUserDto {
     description: 'Educational background',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsString()
   @IsOptional()
   education?: string;
@@ -86,7 +86,7 @@ export class CreateUserDto {
     description: 'Professional certifications',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsString()
   @IsOptional()
   certified?: string;
@@ -96,7 +96,7 @@ export class CreateUserDto {
     description: 'Professional experience',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsString()
   @IsOptional()
   experience?: string;
@@ -107,7 +107,7 @@ export class CreateUserDto {
     required: false,
     isArray: true,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsArray()
   @IsOptional()
   skills: string[];
@@ -119,7 +119,7 @@ export class CreateUserDto {
     minimum: 0,
     maximum: 5,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsNumber()
   @IsOptional()
   rating?: number;

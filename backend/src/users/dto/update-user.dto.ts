@@ -62,7 +62,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Profesión (solo para profesionales)',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsString()
   profession?: string;
@@ -72,7 +72,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Educación del profesional',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsString()
   education?: string;
@@ -82,7 +82,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Certificaciones del profesional',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsString()
   certified?: string;
@@ -92,7 +92,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Experiencia del profesional',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsString()
   experience?: string;
@@ -103,7 +103,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     required: false,
     isArray: true,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
@@ -114,7 +114,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Calificación del profesional',
     required: false,
   })
-  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.PROFESSIONAL)
+  @ValidateIf((o: { role: UserRole }) => o.role === UserRole.professional)
   @IsOptional()
   @IsNumber()
   rating?: number;

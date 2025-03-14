@@ -13,13 +13,13 @@ export class BookingsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createBookingDto: CreateBookingDto) {
-    // Validar usuario
-    const user = await this.prisma.user.findUnique({
+    // Validar profesional
+    const professional = await this.prisma.professionalData.findUnique({
       where: { id: createBookingDto.professionalId },
     });
-    if (!user) {
+    if (!professional) {
       throw new NotFoundException(
-        `User with ID ${createBookingDto.professionalId} not found`,
+        `Professional with ID ${createBookingDto.professionalId} not found`,
       );
     }
     // Validar si el servicio existe
@@ -64,6 +64,18 @@ export class BookingsService {
           select: {
             id: true,
             profession: true,
+            education: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                email: true,
+                age: true,
+                location: true,
+                createdAt: true,
+              },
+            },
           },
         },
         service: {
